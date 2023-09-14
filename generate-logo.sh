@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -x -e
 # — ©FGRibreau #NoBullshit Tech-Lead SaaS checklist :p
 
 # Facebook:
@@ -45,19 +45,14 @@
 # Profile photo: 200 x 200 px
 # Video length: 1080 x 1920 px
 
-PREFIX=""
-SUFFIX="-blue"
-SOURCE=raw-blue.svg
 GENERATE_INVERSE_VERSION=0
 
 for i in 16 32 48 64 110 170 128 256 312 400 500 512 630 720 820 1024 1080 1500 1920 2048 4096
 do
-   /Applications/Inkscape.app/Contents/MacOS/inkscape --export-type png --export-filename "${PREFIX}${i}x${i}${SUFFIX}.png" -w $i $SOURCE
-   convert -flatten "${PREFIX}${i}x${i}${SUFFIX}.png" "${PREFIX}${i}x${i}-white${SUFFIX}.png"
-   if [ $GENERATE_INVERSE_VERSION -eq 1 ]
-   then
-     convert -negate "${PREFIX}${i}x${i}-white${SUFFIX}.png" "${PREFIX}${i}x${i}-black${SUFFIX}.png"
-   fi
+   /Applications/Inkscape.app/Contents/MacOS/inkscape --export-type png --export-filename "${i}x${i}-logo-transparent.png" -w $i logo.svg
+   /Applications/Inkscape.app/Contents/MacOS/inkscape --export-type png --export-filename "${i}x${i}-icon-transparent.png" -w $i icon.svg
+   convert -flatten "${i}x${i}-logo-transparent.png" "${i}x${i}-logo-white.png"
+   convert -flatten "${i}x${i}-icon-transparent.png" "${i}x${i}-icon-white.png"
 done
 
-convert 16x16.png 32x32.png 48x48.png favicon.ico
+convert 16x16-icon-transparent.png 32x32-icon-transparent.png 48x48-icon-transparent.png 256x256-icon-transparent.png 512x512-icon-transparent.png favicon.ico
