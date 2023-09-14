@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x -e
+set -e
 # — ©FGRibreau #NoBullshit Tech-Lead SaaS checklist :p
 
 # Facebook:
@@ -45,14 +45,21 @@ set -x -e
 # Profile photo: 200 x 200 px
 # Video length: 1080 x 1920 px
 
-GENERATE_INVERSE_VERSION=0
+rm -v _* || true
 
 for i in 16 32 48 64 110 170 128 256 312 400 500 512 630 720 820 1024 1080 1500 1920 2048 4096
 do
-   /Applications/Inkscape.app/Contents/MacOS/inkscape --export-type png --export-filename "${i}x${i}-logo-transparent.png" -w $i logo.svg
-   /Applications/Inkscape.app/Contents/MacOS/inkscape --export-type png --export-filename "${i}x${i}-icon-transparent.png" -w $i icon.svg
-   convert -flatten "${i}x${i}-logo-transparent.png" "${i}x${i}-logo-white.png"
-   convert -flatten "${i}x${i}-icon-transparent.png" "${i}x${i}-icon-white.png"
+  for f in "icon-color" "icon-color-text_black" "icon-color-text_white" "icon-grey" "icon-line" "logo-color-text_black" "logo-color-text_white"
+  do
+    /Applications/Inkscape.app/Contents/MacOS/inkscape --export-type png --export-filename "_${f}-bg_transparent-w${i}.png" -w $i ${f}.svg
+
+    if [[ "$f" != *"text_white"* ]]; then
+      convert -flatten "_${f}-bg_transparent-w${i}.png" "_${f}-bg_white-w${i}.png"
+    fi
+
+  done
 done
 
-convert 16x16-icon-transparent.png 32x32-icon-transparent.png 48x48-icon-transparent.png 256x256-icon-transparent.png 512x512-icon-transparent.png favicon.ico
+convert _icon-color-bg_transparent-w16.png _icon-color-bg_transparent-w32.png _icon-color-bg_transparent-w48.png _icon-color-bg_transparent-w256.png _icon-color-bg_transparent-w512.png favicon.ico
+
+cp _icon-color-bg_transparent-w64.png ../../../public/favicon.png
